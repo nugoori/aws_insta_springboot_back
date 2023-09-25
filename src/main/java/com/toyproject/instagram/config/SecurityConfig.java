@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 비밀번호 암호화
-    @Bean // 이미 존재하는 class의 IoC 등록을 위해
+    @Bean // 이미 존재하는 class의 IoC 등록을 위해 사용
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors(); // -> WebMvcConfig에서 설정한 cors정책을 따름
-        http.csrf().disable(); // csrf 토큰 비활성
+        http.csrf().disable(); // csrf 토큰 비활성 (SSR할 때는 중요 할 수 있음)
 
         http.authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/**") // /api/v1/auth로 시작하는 모든 요청

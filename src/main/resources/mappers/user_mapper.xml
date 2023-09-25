@@ -5,6 +5,7 @@
 
 <mapper namespace="com.toyproject.instagram.repository.UserMapper">
 
+    <!--    -->
     <insert id="saveUser" parameterType="com.toyproject.instagram.entity.User">
         insert into user_tb
         values(0, #{email}, #{phone}, #{name}, #{username}, #{password}, #{provider})

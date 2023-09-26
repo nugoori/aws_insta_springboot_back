@@ -10,6 +10,8 @@ public class PrincipalUser implements UserDetails {
     private String phoneOrEmailOrUsername;
     private String password;
 
+    // PrincipalDetailService에서 생성할 때 넘어온 user.get~ 메소드로 넘어온 데이터로 아래의 오버라이딩된 메소드를 실행
+    // 데이터가 일치하는게 있으면 로그인 성공, 아니면 오류 메세지
     public PrincipalUser(String phoneOrEmailOrUsername, String password) {
         this.phoneOrEmailOrUsername = phoneOrEmailOrUsername;
         this.password = password;

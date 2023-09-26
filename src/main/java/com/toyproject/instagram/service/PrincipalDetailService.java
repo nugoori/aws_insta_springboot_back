@@ -16,10 +16,10 @@ public class PrincipalDetailService implements UserDetailsService {
     private final UserMapper userMapper;
 
     // loadUserByUsername가 안쓰이는데 어디서 매개변수를 받아오지?
-    // 서비스에서 넘어온 token으로 find?
     @Override
     public UserDetails loadUserByUsername(String phoneOrEmailOrUsername) throws UsernameNotFoundException {
 //        System.out.println("아이디 : " + phoneOrEmailOrUsername);
+        // UserDetails를 리턴받는 PrincipalUser에 loadUserByUsername의 결과가 리턴
 
         User user = userMapper.findUserByPhone(phoneOrEmailOrUsername);
         if(user != null) {

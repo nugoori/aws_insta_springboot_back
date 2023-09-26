@@ -26,6 +26,7 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
         // spring에서만 MediaType
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
+        // 로그인할 때 발생할 에러에 반환할 메세지를 담을 Map을 만듦
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", getErrorMessage(authException));
 
@@ -38,9 +39,10 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
 
     //
     private String getErrorMessage(AuthenticationException authException) {
-        //
+        // AuthenticationException의 예외 종류별로 처리
         if(authException.getClass() == BadCredentialsException.class) {
             return "잘못된 사용자 정보입니다.";
+            // 아이디에 관한 예외는 InternalAuthenticationServiceException로 넘어가도록 만들어져있음
         } else if(authException.getClass() == InternalAuthenticationServiceException.class) {
             return "잘못된 사용자22 정보입니다.";
         } else if(authException.getClass() == AccountExpiredException.class) {

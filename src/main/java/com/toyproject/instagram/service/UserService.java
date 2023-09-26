@@ -31,6 +31,7 @@ public class UserService {
                 new UsernamePasswordAuthenticationToken(signInReqDto.getPhoneOrEmailOrUsername(), signInReqDto.getLoginPassword());
 
         // ManagerBuilder가 UserDetailService라는 인터페이스로 구현된 클래스가 있는지 IoC Container에서 찾음 -> 오버라이드된 loadUserByUsername() 메소드를 찾고 username을 넘겨줌
+        // 예외가 발생하면
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     }
 

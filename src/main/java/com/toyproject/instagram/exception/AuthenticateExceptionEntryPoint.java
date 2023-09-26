@@ -36,11 +36,13 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
         response.getWriter().println(responseJson);
     }
 
+    //
     private String getErrorMessage(AuthenticationException authException) {
+        //
         if(authException.getClass() == BadCredentialsException.class) {
             return "잘못된 사용자 정보입니다.";
-        } else if(authException.getClass() == UsernameNotFoundException.class) {
-            return "잘못된 사용자 정보입니다.";
+        } else if(authException.getClass() == InternalAuthenticationServiceException.class) {
+            return "잘못된 사용자22 정보입니다.";
         } else if(authException.getClass() == AccountExpiredException.class) {
             return "만료된 사용자 정보입니다.";
         } else if(authException.getClass() == CredentialsExpiredException.class) {

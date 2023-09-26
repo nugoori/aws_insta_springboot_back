@@ -1,5 +1,6 @@
 package com.toyproject.instagram.controller;
 
+import com.toyproject.instagram.dto.SignInReqDto;
 import com.toyproject.instagram.dto.SignUpReqDto;
 import com.toyproject.instagram.exception.SignupException;
 import com.toyproject.instagram.service.UserService;
@@ -36,6 +37,14 @@ public class AuthenticationController {
         //  공통적으로 사용되는 부분들을 AOP로 구현
 
         userService.signUpUser(signUpReqDto); //
+        return ResponseEntity.ok(null);
+    }
+
+    // Validation은 DTO형태로 데이터가 들어왔을 때 검사 하는것 , 
+    // 사용자 관점에서 로그인이 안되는 경우 입력 값이 사용자의 잘못 되었는지 DB에서 비교를 해야하기 때문에 로그인때는 Valid검사를 하지 않는 것이 좋음
+    @PostMapping("/login")
+    public ResponseEntity<?> signIn(@RequestBody SignInReqDto signInReqDto) {
+        userService.signInUser(signInReqDto);
         return ResponseEntity.ok(null);
     }
 }

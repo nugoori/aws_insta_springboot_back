@@ -2,7 +2,9 @@ package com.toyproject.instagram.service;
 
 import com.toyproject.instagram.dto.SignInReqDto;
 import com.toyproject.instagram.dto.SignUpReqDto;
+import com.toyproject.instagram.exception.JwtException;
 import com.toyproject.instagram.repository.UserMapper;
+import com.toyproject.instagram.security.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,13 +21,14 @@ public class UserService {
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JWTTokenProvider jwtTokenProvider;
 
     public void signUpUser(SignUpReqDto signUpReqDto) {
         Integer executeCount = userMapper.saveUser(signUpReqDto.toUserEntity(passwordEncoder));
         System.out.println(executeCount);
     }
 
-    public void signInUser(SignInReqDto signInReqDto) {
+    public String signInUser(SignInReqDto signInReqDto) {
         //아이디,비밀 번호를 가지고 토큰을 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(signInReqDto.getPhoneOrEmailOrUsername(), signInReqDto.getLoginPassword());
@@ -35,6 +38,18 @@ public class UserService {
         // 예외가 발생하면 securityConfig의 예외처리 handling 부분으로 -> 거기서 필요한 AuthenticationEntryPoint을 implements한 calss에서 로그인에 관한 에러에 넘겨줄 메세지를 담은 메소드를 작성
         // 인증이 되면 Authentication 객체에 담음
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        // jwt 부분 추가
+        String accessToken = jwtTokenProvider.generateAccessToken(authentication);
+        return accessToken; 
+    }
+
+    public Boolean authenticate(String token) {
+        String accessToken = jwtTokenProvider.convertToken(token);
+        if(!jwtTokenProvider.validateToken(accessToken)) {
+            // 11:50
+            throw new JwtException("사용자 정보가 만료되었습니다. 다시 로그인하세요");
+        }
+        return true;
     }
 
 }

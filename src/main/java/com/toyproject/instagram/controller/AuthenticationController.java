@@ -7,10 +7,7 @@ import com.toyproject.instagram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -44,9 +41,17 @@ public class AuthenticationController {
     // 사용자 관점에서 로그인이 안되는 경우 입력 값이 사용자의 잘못 되었는지 DB에서 비교를 해야하기 때문에 로그인때는 Valid검사를 하지 않는 것이 좋음
     @PostMapping("/login")
     public ResponseEntity<?> signIn(@RequestBody SignInReqDto signInReqDto) {
-        userService.signInUser(signInReqDto);
-        return ResponseEntity.ok(null);
+        String accessToken = userService.signInUser(signInReqDto);
+        return ResponseEntity.ok().body(accessToken);
     }
+
+    @GetMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestHeader(value = "Authorization") String token) {
+        // -> provider로 가서 토큰 분해해서 사용자 데이터 넣어주기
+        return ResponseEntity.ok(userService.authenticate(token));
+
+    }
+
 }
 
 

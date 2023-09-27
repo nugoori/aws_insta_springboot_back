@@ -4,53 +4,96 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.toyproject.instagram.repository.UserMapper">
+    <!-- 권한 설정 부분을 위해 추가   -->
+    <resultMap id="userMap" type="com.toyproject.instagram.entity.User">
+        <id property="userId" column="user_id" />
+        <!--    UserEntity    -->
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="provider" column="provider"/>
+        <!--    1:다의 관계에는 collection    -->
+        <!--   myBatis에서 select문의 결과의 중복 부분을 자동으로 제거해줌?     -->
+        <collection property="authorities" javaType="list" resultMap="authorityMap" />
+    </resultMap>
 
-    <!--    -->
+    <resultMap id="authorityMap" type="com.toyproject.instagram.entity.Authority">
+        <id property="authorityId" column="authority_id" />
+        <result property="userId" column="user_id" />
+        <result property="roleId" column="role_id" />
+        <!--    1:1 관계에는 association    -->
+        <association property="role" resultMap="roleMap" />
+    </resultMap>
+
+    <resultMap id="roleMap" type="com.toyproject.instagram.entity.Role">
+        <id property="roleId" column="role_id" />
+        <result property="roleName" column="role_name" />
+    </resultMap>
+
+    <!--  회원가입, 로그인 부분   -->
     <insert id="saveUser" parameterType="com.toyproject.instagram.entity.User">
         insert into user_tb
         values(0, #{email}, #{phone}, #{name}, #{username}, #{password}, #{provider})
     </insert>
 
-    <select id="findUserByPhone" parameterType="String" resultType="com.toyproject.instagram.entity.User">
+    <select id="findUserByPhone" parameterType="String" resultMap="userMap">
         select
-            user_id,
-            email,
-            phone,
-            name,
-            username,
-            password,
-            provider
+            ut.user_id,
+            ut.email,
+            ut.phone,
+            ut.name,
+            ut.username,
+            ut.password,
+            ut.provider,
+            at.authority_id,
+            rt.role_id,
+            rt.role_name
         from
-            user_tb
+            user_tb ut
+            left outer join authority_tb at on(at.user_id = ut.user_id)
+            left outer join role_tb rt on(rt.role_id = at.role_id)
         where
-            phone = #{phoneOrEmailOrUsername}
+            ut.phone = #{phoneOrEmailOrUsername}
     </select>
-    <select id="findUserByEmail" parameterType="String" resultType="com.toyproject.instagram.entity.User">
+    <select id="findUserByEmail" parameterType="String" resultMap="userMap">
         select
-            user_id,
-            email,
-            phone,
-            name,
-            username,
-            password,
-            provider
+            ut.user_id,
+            ut.email,
+            ut.phone,
+            ut.name,
+            ut.username,
+            ut.password,
+            ut.provider,
+            at.authority_id,
+            rt.role_id,
+            rt.role_name
         from
-            user_tb
+            user_tb ut
+            left outer join authority_tb at on(at.user_id = ut.user_id)
+            left outer join role_tb rt on(rt.role_id = at.role_id)
         where
-            email = #{phoneOrEmailOrUsername}
+            ut.email = #{phoneOrEmailOrUsername}
     </select>
-    <select id="findUserByUsername" parameterType="String" resultType="com.toyproject.instagram.entity.User">
+    <!--  resultType="com.toyproject.instagram.entity.User"  -->
+    <select id="findUserByUsername" parameterType="String" resultMap="userMap">
         select
-            user_id,
-            email,
-            phone,
-            name,
-            username,
-            password,
-            provider
+            ut.user_id,
+            ut.email,
+            ut.phone,
+            ut.name,
+            ut.username,
+            ut.password,
+            ut.provider,
+            at.authority_id,
+            rt.role_id,
+            rt.role_name
         from
-            user_tb
+            user_tb ut
+            left outer join authority_tb at on(at.user_id = ut.user_id)
+            left outer join role_tb rt on(rt.role_id = at.role_id)
         where
-            username = #{phoneOrEmailOrUsername}
+            ut.username = #{phoneOrEmailOrUsername}
     </select>
 </mapper>

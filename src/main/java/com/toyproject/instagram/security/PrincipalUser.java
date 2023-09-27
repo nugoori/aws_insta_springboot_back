@@ -55,4 +55,6 @@ public class PrincipalUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // return에 false가 하나라도 있으면 작동X
 }

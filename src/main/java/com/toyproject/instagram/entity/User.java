@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +20,6 @@ public class User {
     private String username;
     private String password;
     private String provider;
+    // 0927 0421
+    private List<Authority> authorities; // 유저1 과 role이 일대 다의 관계
 }

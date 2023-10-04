@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 @Data
 public class SignUpReqDto {
 //    @NotBlank(message = "전화번호 또는 이메일은 공백일 수 없습니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9]+@[\\da-zA-Z]+\\.[a-z]+|[\\d]{11}+$", message = "이메일 또는 전화번호를 입력하세요.") // \\ 문자열 안에서 사용해야 하므로 두개를 사용
+    @Pattern(regexp = "^[a-zA-Z0-9]+@[\\da-zA-Z]+\\.[a-z]+|[0-9]{11}+$", message = "이메일 또는 전화번호를 입력하세요.") // \\ 문자열 안에서 사용해야 하므로 두개를 사용
     private String phoneOrEmail;
 
 //    @NotBlank(message = "이름은 공백일 수 없습니다.")
@@ -26,7 +26,6 @@ public class SignUpReqDto {
     // dto를 entity로 변환 // BCryptPasswordEncoder가 DTO가 생성 될 때 마다 생성하지 않도록 service에서 IoC에 등록하고 매개변수로 받음
     public User toUserEntity(BCryptPasswordEncoder passwordEncoder) {
         return User.builder()
-                .email(phoneOrEmail)
                 .name(name)
                 .username(username)
                 .password(passwordEncoder.encode(password))

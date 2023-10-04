@@ -22,18 +22,19 @@ public class PrincipalDetailService implements UserDetailsService {
         // UserDetails를 리턴받는 PrincipalUser에 loadUserByUsername의 결과가 리턴
 
         User user = userMapper.findUserByPhone(phoneOrEmailOrUsername);
+
         if(user != null) {
-            return new PrincipalUser(user.getPhone(), user.getPassword());
+            return new PrincipalUser(user.getPhone(), user.getPassword(), user.getAuthorities());
         }
 
         user = userMapper.findUserByEmail(phoneOrEmailOrUsername);
         if(user != null) {
-            return new PrincipalUser(user.getEmail(), user.getPassword());
+            return new PrincipalUser(user.getEmail(), user.getPassword(), user.getAuthorities());
         }
 
         user = userMapper.findUserByUsername(phoneOrEmailOrUsername);
         if(user != null) {
-            return new PrincipalUser(user.getUsername(), user.getPassword());
+            return new PrincipalUser(user.getUsername(), user.getPassword(), user.getAuthorities());
         }
 
         // UserDetails가 아닌 null로 반환하면 자동으로 예외처리를 해줌

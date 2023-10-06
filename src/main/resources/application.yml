@@ -1,3 +1,4 @@
+# space2개로 들여쓰기!!
 spring:
   servlet:
     multipart:
@@ -13,6 +14,9 @@ spring:
 mybatis:
   mapper-locations:
     - /mappers/*.xml
-# space2개로 들여쓰기!!
+
+file:
+  path:  C:/aws/instargram/back/instagram/upload
+
 jwt:
   secret: 1bG7VwYrWw4ua3Q334APKFySehA/ZL+NO8xIBuF01H1OkMg7l/4tiOKiJ9b3HkQ6ycNiNRyAVEPZVKgX6Vp3/g==

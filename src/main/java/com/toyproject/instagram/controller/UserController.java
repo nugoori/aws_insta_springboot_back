@@ -13,7 +13,7 @@ public class UserController {
 
     @GetMapping("/user/{username}")
     public ResponseEntity<?> getUser(@PathVariable String username) {
-        
+
         return ResponseEntity.ok().body(null);
     }
 }
